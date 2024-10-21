@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.chugtec.app",
+      "sha256_cert_fingerprints": [
+        "05:5B:83:B1:A8:E8:EC:74:FB:0A:C4:6D:79:AE:90:E5:15:A8:F9:48:9B:ED:3C:19:E9:6E:E5:2A:B4:39:35:5C"
+      ]
+    }
+  }
+]

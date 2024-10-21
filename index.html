@@ -470,15 +470,43 @@
     </div>
 
     <script>
-      // Toggle contact info
-      document
-        .querySelector(".contactus")
-        .addEventListener("click", function () {
-          const contactInfo = document.querySelector(".contactInfo");
-          contactInfo.classList.toggle("show");
-        });
+      // Deep linking logic
+      function handleUniversalLink() {
+        const pathname = window.location.pathname;
 
-      // Versatile typeWriter function
+        if (pathname.startsWith("/news/")) {
+          const newsId = pathname.split("/news/")[1];
+
+          if (/^[a-zA-Z0-9-]+$/.test(newsId)) {
+            const appScheme = `chugtec://news/${newsId}`;
+            let appOpened = false;
+
+            // Attempt to open the app
+            window.location.href = appScheme;
+
+            // If the app opens, this event will fire
+            window.onblur = function () {
+              appOpened = true;
+            };
+
+            // If the app doesn't open after a delay, redirect to the main website
+            setTimeout(function () {
+              if (!appOpened) {
+                window.location.href = "https://chugtec.com";
+              }
+            }, 1000); // 1 second delay
+          } else {
+            console.log("Invalid news ID format");
+            // Redirect to homepage for invalid news ID
+            window.location.href = "https://chugtec.com";
+          }
+        } else {
+          console.log("Not a news link, staying on the website");
+          // This is a regular website visit, no action needed
+        }
+      }
+
+      // Typewriter effect function
       function typeWriter(element, text, speed = 50) {
         let i = 0;
         element.innerHTML = "";
@@ -492,18 +520,32 @@
         type();
       }
 
-      // Initial typewriter effect for the main description
-      typeWriter(
-        document.getElementById("typed-text"),
-        "A tech app that gives tech updates in a simple manner. That's it."
-      );
+      // Execute when the DOM is fully loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Handle deep linking
+        handleUniversalLink();
 
-      // Click event for the "Click me :)" text
-      document
-        .getElementById("click-me-text")
-        .addEventListener("click", function () {
-          typeWriter(this, "Have a chugging nice day!");
-        });
+        // Toggle contact info
+        document
+          .querySelector(".contactus")
+          .addEventListener("click", function () {
+            const contactInfo = document.querySelector(".contactInfo");
+            contactInfo.classList.toggle("show");
+          });
+
+        // Initial typewriter effect for the main description
+        typeWriter(
+          document.getElementById("typed-text"),
+          "A tech app that gives tech updates in a simple manner. That's it."
+        );
+
+        // Click event for the "Click me :)" text
+        document
+          .getElementById("click-me-text")
+          .addEventListener("click", function () {
+            typeWriter(this, "Have a chugging nice day!");
+          });
+      });
     </script>
   </body>
 </html>
